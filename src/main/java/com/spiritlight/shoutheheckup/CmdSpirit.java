@@ -6,9 +6,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-
 import java.io.IOException;
-import java.util.Arrays;
 
 public class CmdSpirit extends CommandBase {
     @Override
@@ -36,6 +34,7 @@ public class CmdSpirit extends CommandBase {
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu toggle - Toggles on/off mod feature"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu sethidelevel - Set hide shout level"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu hidelevel - Shows hide lv behaviors"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " Current Hide Level: " + (STHU.hidelevel == 3 ? "§4HIGHEST" : (STHU.hidelevel == 2 ? "§cHIGH" : (STHU.hidelevel == 1 ? "§eMedium" : (STHU.hidelevel == 0 ? "§aLow" : "§7Failed to get"))))));
             sender.sendMessage(new TextComponentString(STHU.prefix + " -----------------------------------------"));
         }
         else {
@@ -80,7 +79,7 @@ public class CmdSpirit extends CommandBase {
         if(s == null) {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou should supply a player."));
         } else if (STHU.players.contains(s)) {
-            STHU.players.remove(STHU.players.indexOf(s));
+            STHU.players.remove(s);
         } else
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cThe player does not exist from the list."));
         refreshConfig();
