@@ -26,7 +26,7 @@ public class CmdSpirit extends CommandBase {
 
     @Override
     public void execute(MinecraftServer minecraftServer, ICommandSender sender, String[] args) { // yeet CommandException
-        if (args.length == 0 || args[0] == "help") {
+        if (args.length == 0 || args[0].equals("help")) {
             sender.sendMessage(new TextComponentString(STHU.prefix + " --------------- Help Page ---------------"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu add - Adds a player to ignore shout"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu remove - Removes a player from list"));
