@@ -1,0 +1,16 @@
+[
+{
+  "modid": "sthu",
+  "name": "Shout The Heck Up",
+  "description": "Wynncraft Utility mod to tell those shout spammers to shut up.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["OriTheSpirit"],
+  "credits": "OriTheSpirit for making the mod, FML guys and Forge for making this.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
