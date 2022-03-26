@@ -52,6 +52,7 @@ public class CmdSpirit extends CommandBase {
                     setHidelevel(args[1], sender);
                     break;
                 case "hidelevel":
+                    sender.sendMessage(new TextComponentString(STHU.prefix + " all - Suppresses ALL shout message"));
                     sender.sendMessage(new TextComponentString(STHU.prefix + " high - Suppresses shout message"));
                     sender.sendMessage(new TextComponentString(STHU.prefix + " medium - Replaces shout message"));
                     sender.sendMessage(new TextComponentString(STHU.prefix + " low - Replaces shout message with sender name"));
