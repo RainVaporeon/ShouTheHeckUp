@@ -75,9 +75,7 @@ public class CmdSpirit extends CommandBase {
     // cc §
     private void add(String s, ICommandSender sender) {
         // add player to list
-        if(s == null) {
-            sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou should supply a player."));
-        } else if (STHU.players.contains(s)) {
+        if (STHU.players.contains(s)) {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cThis player already exists."));
         } else {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §aAdded player §b" + s + "§a to the ignore list!"));
@@ -88,9 +86,7 @@ public class CmdSpirit extends CommandBase {
 
     private void remove(String s, ICommandSender sender) {
         // remove player from list
-        if(s == null) {
-            sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou should supply a player."));
-        } else if (STHU.players.contains(s)) {
+        if (STHU.players.contains(s)) {
             STHU.players.remove(s);
             sender.sendMessage(new TextComponentString(STHU.prefix + " §aRemoved player §b" + s + "§a from the ignore list!"));
         } else
