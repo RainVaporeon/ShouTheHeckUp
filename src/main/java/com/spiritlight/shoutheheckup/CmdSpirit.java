@@ -26,7 +26,7 @@ public class CmdSpirit extends CommandBase {
 
     @Override
     public void execute(MinecraftServer minecraftServer, ICommandSender sender, String[] args) { // yeet CommandException
-        if (args.length == 0) {
+        if (args.length == 0 || args[0] == "help") {
             sender.sendMessage(new TextComponentString(STHU.prefix + " --------------- Help Page ---------------"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu add - Adds a player to ignore shout"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu remove - Removes a player from list"));
@@ -40,9 +40,15 @@ public class CmdSpirit extends CommandBase {
         else {
             switch(args[0]) {
                 case "add":
+                    if(args[1] == null) {
+                        sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a player!"));
+                    } else
                     add(args[1], sender);
                     break;
                 case "remove":
+                    if(args[1] == null) {
+                        sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a player!"));
+                    } else
                     remove(args[1], sender);
                     break;
                 case "list":
@@ -70,9 +76,11 @@ public class CmdSpirit extends CommandBase {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou should supply a player."));
         } else if (STHU.players.contains(s)) {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cThis player already exists."));
-        } else
+        } else {
+            sender.sendMessage(new TextComponentString(STHU.prefix + " §aAdded player §b" + s + "§a to the ignore list!"));
             STHU.players.add(s);
             refreshConfig();
+        }
     }
 
     private void remove(String s, ICommandSender sender) {
@@ -81,6 +89,7 @@ public class CmdSpirit extends CommandBase {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou should supply a player."));
         } else if (STHU.players.contains(s)) {
             STHU.players.remove(s);
+            sender.sendMessage(new TextComponentString(STHU.prefix + " §aRemoved player §b" + s + "§a from the ignore list!"));
         } else
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cThe player does not exist from the list."));
         refreshConfig();
