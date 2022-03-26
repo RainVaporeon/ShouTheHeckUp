@@ -40,13 +40,13 @@ public class CmdSpirit extends CommandBase {
         else {
             switch(args[0]) {
                 case "add":
-                    if(args[1] == null) {
+                    if(args.length < 2) {
                         sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a player!"));
                     } else
                     add(args[1], sender);
                     break;
                 case "remove":
-                    if(args[1] == null) {
+                    if(args.length < 2) {
                         sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a player!"));
                     } else
                     remove(args[1], sender);
@@ -55,6 +55,9 @@ public class CmdSpirit extends CommandBase {
                     sender.sendMessage(new TextComponentString(STHU.prefix + " Current ignored players: " + STHU.players)); // Add something
                     break;
                 case "sethidelevel":
+                    if(args.length < 2) {
+                        sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a hide level!"));
+                    } else
                     setHidelevel(args[1], sender);
                     break;
                 case "hidelevel":
@@ -113,7 +116,7 @@ public class CmdSpirit extends CommandBase {
                 STHU.hidelevel = 0; // Shows [Blocked Shout Message by player]
                 break;
         }
-        sender.sendMessage(new TextComponentString(STHU.prefix + " HideLevel has been changed."));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " §aHideLevel has been changed to §b" + level + "§a."));
         refreshConfig();
     }
     private void refreshConfig() {
