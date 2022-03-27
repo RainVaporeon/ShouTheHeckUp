@@ -18,6 +18,9 @@ public class ConfigSpirit {
             for (JsonElement element : jsonObject.getAsJsonArray("players")) {
                 STHU.players.add(element.getAsString());
             }
+            for (JsonElement element : jsonObject.getAsJsonArray("bannedWords")) {
+                STHU.bannedWords.add(element.getAsString());
+            }
             STHU.hidelevel = Integer.parseInt(String.valueOf(jsonObject.get("hidelevel")));
         } else {
             writeConfig();
@@ -32,6 +35,12 @@ public class ConfigSpirit {
         writer.beginArray();
         for (String player : STHU.players) {
             writer.value(player);
+        }
+        writer.endArray();
+        writer.name("bannedWords");
+        writer.beginArray();
+        for (String word : STHU.bannedWords) {
+            writer.value(word);
         }
         writer.endArray();
         writer.endObject();

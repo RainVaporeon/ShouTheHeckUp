@@ -29,8 +29,11 @@ public class CmdSpirit extends CommandBase {
         if (args.length == 0 || args[0].equals("help")) {
             sender.sendMessage(new TextComponentString(STHU.prefix + " --------------- Help Page ---------------"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu add - Adds a player to ignore shout"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu addtext - Ignores a word from shout"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu remove - Removes a player from list"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu removetext - Removes text from list"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu list - Lists players ignored so far"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu listtext - Lists banned shout texts"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu toggle - Toggles on/off mod feature"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu sethidelevel - Set hide shout level"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu hidelevel - Shows hide lv behaviors"));
@@ -51,8 +54,23 @@ public class CmdSpirit extends CommandBase {
                     } else
                     remove(args[1], sender);
                     break;
+                case "addtext":
+                    if(args.length < 2) {
+                        sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a text!"));
+                    } else
+                        addtext(args[1], sender);
+                    break;
+                case "removetext":
+                    if(args.length < 2) {
+                        sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a text!"));
+                    } else
+                        removetext(args[1], sender);
+                    break;
                 case "list":
                     sender.sendMessage(new TextComponentString(STHU.prefix + " Current ignored players: " + STHU.players)); // Add something
+                    break;
+                case "listtext":
+                    sender.sendMessage(new TextComponentString(STHU.prefix + " Current banned words: " + STHU.bannedWords)); // Add something
                     break;
                 case "sethidelevel":
                     if(args.length < 2) {
@@ -91,6 +109,26 @@ public class CmdSpirit extends CommandBase {
             sender.sendMessage(new TextComponentString(STHU.prefix + " §aRemoved player §b" + s + "§a from the ignore list!"));
         } else
             sender.sendMessage(new TextComponentString(STHU.prefix + " §cThe player does not exist from the list."));
+        refreshConfig();
+    }
+    private void addtext(String s, ICommandSender sender) {
+        // add player to list
+        if (STHU.bannedWords.contains(s)) {
+            sender.sendMessage(new TextComponentString(STHU.prefix + " §cThis text already exists."));
+        } else {
+            sender.sendMessage(new TextComponentString(STHU.prefix + " §aAdded text §b" + s + "§a to the ignore list!"));
+            STHU.bannedWords.add(s);
+            refreshConfig();
+        }
+    }
+
+    private void removetext(String s, ICommandSender sender) {
+        // remove player from list
+        if (STHU.bannedWords.contains(s)) {
+            STHU.bannedWords.remove(s);
+            sender.sendMessage(new TextComponentString(STHU.prefix + " §aRemoved text §b" + s + "§a from the ignore list!"));
+        } else
+            sender.sendMessage(new TextComponentString(STHU.prefix + " §cThe text does not exist from the list."));
         refreshConfig();
     }
     private void toggle(ICommandSender sender) {

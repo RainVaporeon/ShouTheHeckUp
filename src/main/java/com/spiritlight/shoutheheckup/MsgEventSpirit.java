@@ -11,32 +11,33 @@ public class MsgEventSpirit {
         // Split messages
         String[] message = event.getMessage().getUnformattedText().split(" ");
         if(message.length >= 3)
-        if((STHU.players.contains(message[0]) && message[2].contains("shouts:")) || (message[2].contains("shouts:") && STHU.hidelevel == 3)) {
-            // Declare initial types
-            TextComponentString text;
-            Style style;
-            // Behavior
-            switch(STHU.hidelevel) {
-                case 3:
-                    event.setCanceled(true);
-                    break;
-                case 2:
-                    event.setCanceled(true);
-                    break;
-                case 1:
-                    text = new TextComponentString("§7§o[Blocked shout message]");
-                    style = text.getStyle();
-                    style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, event.getMessage()));
-                    text.setStyle(style);
-                    event.setMessage(text);
-                    break;
-                case 0:
-                    text = new TextComponentString("§7§o[Blocked shout message by " + message[0] + "]");
-                    style = text.getStyle();
-                    style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, event.getMessage()));
-                    text.setStyle(style);
-                    event.setMessage(text);
-                    break;
+            if (message[2].contains("shouts:"))
+                if((STHU.players.contains(message[0])) || STHU.hidelevel == 3 || STHU.bannedWords.stream().anyMatch(event.getMessage().getUnformattedText()::contains)) {
+                    // Declare initial types
+                  TextComponentString text;
+                  Style style;
+                  // Behavior
+                    switch(STHU.hidelevel) {
+                        case 3:
+                            event.setCanceled(true);
+                            break;
+                        case 2:
+                            event.setCanceled(true);
+                            break;
+                        case 1:
+                            text = new TextComponentString("§7§o[Blocked shout message]");
+                            style = text.getStyle();
+                         style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, event.getMessage()));
+                            text.setStyle(style);
+                            event.setMessage(text);
+                            break;
+                        case 0:
+                            text = new TextComponentString("§7§o[Blocked shout message by " + message[0] + "]");
+                            style = text.getStyle();
+                            style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, event.getMessage()));
+                            text.setStyle(style);
+                            event.setMessage(text);
+                            break;
             }
         }
     }
