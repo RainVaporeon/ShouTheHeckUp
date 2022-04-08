@@ -27,3 +27,6 @@ Command Notes:
 
 This project is built on Java 1.8, run `gradlew build` to build.
 
+### Donating
+  
+  https://ko-fi.com/orispirit 
