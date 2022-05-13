@@ -7,6 +7,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class CmdSpirit extends CommandBase {
     @Override
@@ -29,11 +30,11 @@ public class CmdSpirit extends CommandBase {
         if (args.length == 0 || args[0].equals("help")) {
             sender.sendMessage(new TextComponentString(STHU.prefix + " --------------- Help Page ---------------"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu add - Adds a player to ignore shout"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu addtext - Ignores a word from shout"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu addtext - Ignores a line from shout"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu remove - Removes a player from list"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu removetext - Removes text from list"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu removetext - Removes line from list"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu list - Lists players ignored so far"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu listtext - Lists banned shout texts"));
+            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu listtext - Lists banned shout lines"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu toggle - Toggles on/off mod feature"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu sethidelevel - Set hide shout level"));
             sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu hidelevel - Shows hide lv behaviors"));
@@ -57,14 +58,20 @@ public class CmdSpirit extends CommandBase {
                 case "addtext":
                     if(args.length < 2) {
                         sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a text!"));
-                    } else
-                        addtext(args[1], sender);
+                    } else {
+                        String[] sa = Arrays.copyOfRange(args, 2, args.length);
+                        String s = String.join(" ", sa);
+                        addtext(s, sender);
+                    }
                     break;
                 case "removetext":
                     if(args.length < 2) {
                         sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a text!"));
-                    } else
-                        removetext(args[1], sender);
+                    } else {
+                        String[] sa = Arrays.copyOfRange(args, 2, args.length);
+                        String s = String.join(" ", sa);
+                        removetext(s, sender);
+                    }
                     break;
                 case "list":
                     sender.sendMessage(new TextComponentString(STHU.prefix + " Current ignored players: " + STHU.players)); // Add something

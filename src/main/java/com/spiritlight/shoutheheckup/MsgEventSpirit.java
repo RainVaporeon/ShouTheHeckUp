@@ -19,8 +19,6 @@ public class MsgEventSpirit {
                   // Behavior
                     switch(STHU.hidelevel) {
                         case 3:
-                            event.setCanceled(true);
-                            break;
                         case 2:
                             event.setCanceled(true);
                             break;
