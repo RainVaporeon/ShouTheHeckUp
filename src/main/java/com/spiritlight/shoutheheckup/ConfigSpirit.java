@@ -10,19 +10,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConfigSpirit {
+    private static boolean antiLoop = false;
+
     public static void getConfig() throws IOException {
         File config = new File("config/STHU.json");
         if (config.exists()) {
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = (JsonObject)parser.parse(new FileReader("config/STHU.json"));
-            for (JsonElement element : jsonObject.getAsJsonArray("players")) {
-                STHU.players.add(element.getAsString());
+            try {
+                JsonParser parser = new JsonParser();
+                JsonObject jsonObject = (JsonObject) parser.parse(new FileReader("config/STHU.json"));
+                for (JsonElement element : jsonObject.getAsJsonArray("players")) {
+                    STHU.players.add(element.getAsString());
+                }
+                for (JsonElement element : jsonObject.getAsJsonArray("bannedWords")) {
+                    STHU.bannedWords.add(element.getAsString());
+                }
+                STHU.hidelevel = Integer.parseInt(String.valueOf(jsonObject.get("hidelevel")));
+                STHU.filterChat = jsonObject.get("chatfilter").getAsBoolean();
+            }  catch (NullPointerException exception) {
+                System.out.println("New configuration files found?");
+                if(antiLoop) return;
+                antiLoop = true;
+                writeConfig();
+                getConfig();
             }
-            for (JsonElement element : jsonObject.getAsJsonArray("bannedWords")) {
-                STHU.bannedWords.add(element.getAsString());
-            }
-            STHU.hidelevel = Integer.parseInt(String.valueOf(jsonObject.get("hidelevel")));
-            STHU.filterChat = jsonObject.get("chatfilter").getAsBoolean();
         } else {
             writeConfig();
         }
