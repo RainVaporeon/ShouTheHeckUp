@@ -22,6 +22,7 @@ public class ConfigSpirit {
                 STHU.bannedWords.add(element.getAsString());
             }
             STHU.hidelevel = Integer.parseInt(String.valueOf(jsonObject.get("hidelevel")));
+            STHU.filterChat = jsonObject.get("chatfilter").getAsBoolean();
         } else {
             writeConfig();
         }
@@ -31,6 +32,7 @@ public class ConfigSpirit {
         JsonWriter writer = new JsonWriter(new FileWriter("config/STHU.json"));
         writer.beginObject();
         writer.name("hidelevel").value(STHU.hidelevel);
+        writer.name("chatfilter").value(STHU.filterChat);
         writer.name("players");
         writer.beginArray();
         for (String player : STHU.players) {

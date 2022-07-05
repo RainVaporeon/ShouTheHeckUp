@@ -1,14 +1,19 @@
 package com.spiritlight.shoutheheckup;
 
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 // import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.Arrays;
 
+@MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
 public class CmdSpirit extends CommandBase {
     @Override
     public String getName() {
@@ -22,24 +27,13 @@ public class CmdSpirit extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender iCommandSender) {
-        return "/sthu (add/remove/list)";
+        return "/sthu help";
     }
 
     @Override
     public void execute(MinecraftServer minecraftServer, ICommandSender sender, String[] args) { // yeet CommandException
         if (args.length == 0 || args[0].equals("help")) {
-            sender.sendMessage(new TextComponentString(STHU.prefix + " --------------- Help Page ---------------"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu add - Adds a player to ignore shout"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu addtext - Ignores a line from shout"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu remove - Removes a player from list"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu removetext - Removes line from list"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu list - Lists players ignored so far"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu listtext - Lists banned shout lines"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu toggle - Toggles on/off mod feature"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu sethidelevel - Set hide shout level"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu hidelevel - Shows hide lv behaviors"));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " Current Hide Level: " + (STHU.hidelevel == 3 ? "§4HIGHEST" : (STHU.hidelevel == 2 ? "§cHIGH" : (STHU.hidelevel == 1 ? "§eMedium" : (STHU.hidelevel == 0 ? "§aLow" : "§7Failed to get"))))));
-            sender.sendMessage(new TextComponentString(STHU.prefix + " -----------------------------------------"));
+            getHelp(sender);
         }
         else {
             switch(args[0]) {
@@ -59,7 +53,7 @@ public class CmdSpirit extends CommandBase {
                     if(args.length < 2) {
                         sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a text!"));
                     } else {
-                        String[] sa = Arrays.copyOfRange(args, 2, args.length);
+                        String[] sa = Arrays.copyOfRange(args, 1, args.length);
                         String s = String.join(" ", sa);
                         addtext(s, sender);
                     }
@@ -68,7 +62,7 @@ public class CmdSpirit extends CommandBase {
                     if(args.length < 2) {
                         sender.sendMessage(new TextComponentString(STHU.prefix + " §cYou need to supply a text!"));
                     } else {
-                        String[] sa = Arrays.copyOfRange(args, 2, args.length);
+                        String[] sa = Arrays.copyOfRange(args, 1, args.length);
                         String s = String.join(" ", sa);
                         removetext(s, sender);
                     }
@@ -94,9 +88,32 @@ public class CmdSpirit extends CommandBase {
                 case "toggle":
                     toggle(sender);
                     break;
+                case "banchat":
+                    STHU.filterChat = !STHU.filterChat;
+                    sender.sendMessage(new TextComponentString(STHU.prefix + " OK, blocked words also filter chat: " + STHU.filterChat));
+                    refreshConfig();
+                    break;
+                default:
+                    getHelp(sender);
             }
         }
     }
+    private void getHelp(ICommandSender sender) {
+        sender.sendMessage(new TextComponentString(STHU.prefix + " --------------- Help Page ---------------"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu add - Adds a player to ignore shout"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu addtext - Ignores a line from shout"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu remove - Removes a player from list"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu removetext - Removes line from list"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu list - Lists players ignored so far"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu listtext - Lists banned shout lines"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu toggle - Toggles on/off mod feature"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu sethidelevel - Set hide shout level"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu hidelevel - Shows hide lv behaviors"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " /sthu banchat - Also blocks chat messages"));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " Current Hide Level: " + (STHU.hidelevel == 3 ? "§4HIGHEST" : (STHU.hidelevel == 2 ? "§cHIGH" : (STHU.hidelevel == 1 ? "§eMedium" : (STHU.hidelevel == 0 ? "§aLow" : "§7Failed to get"))))));
+        sender.sendMessage(new TextComponentString(STHU.prefix + " -----------------------------------------"));
+    }
+
     // cc §
     private void add(String s, ICommandSender sender) {
         // add player to list
@@ -165,6 +182,10 @@ public class CmdSpirit extends CommandBase {
             ConfigSpirit.writeConfig();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if(STHU.bannedWords.contains("")) {
+            Minecraft.getMinecraft().player.sendMessage(new TextComponentString(STHU.prefix + " Found blank messages in mod. It'll be removed."));
+            STHU.bannedWords.remove("");
         }
     }
 }
